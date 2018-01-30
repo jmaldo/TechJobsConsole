@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -47,9 +48,11 @@ namespace TechJobsConsole
 
             foreach (Dictionary<string, string> row in AllJobs)
             {
-                string aValue = row[column];
+                string aValue = row[column].ToLower();
 
-                if (aValue.Contains(value))
+                if (aValue.Contains(value.ToLower()))
+                //if (aValue.IndexOf(value, System.StringComparison.OrdinalIgnoreCase))
+                //if (string.Equals(value, aValue, System.StringComparison.OrdinalIgnoreCase))
                 {
                     jobs.Add(row);
                 }
@@ -57,10 +60,47 @@ namespace TechJobsConsole
 
             return jobs;
         }
+        //If I ToLower() user's search string and compare against a ToLower()'d Dictionary, then return original Dictionary result...?
+        public static List<Dictionary<string, string>> FindByValue(Dictionary<string, string> columnChoices, string value)
+        {
+            LoadData();
+
+            List<Dictionary<string, string>> aValueInJobs = new List<Dictionary<string, string>>();
+
+            List<string> columnKeys = new List<string>(columnChoices.Keys);
+            // create list of Keys from columnChoices to use as column in row[column]
+            foreach (string column in columnKeys)
+            {
+                foreach (Dictionary<string, string> row in AllJobs)
+                {
+                    string aValue = row[column];
+                    //if (aValue.Contains(value))
+                    if (string.Equals(value, aValue, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        aValueInJobs.Add(row);
+                    }
+                }
+            }
+            return aValueInJobs;
+        }
+
+        internal static List<Dictionary<string, string>> FindByValue(string searchTerm)
+        {
+            throw new NotImplementedException();
+        }
 
         /*
-         * Load and parse data from job_data.csv
-         */
+public static List<Dictionary<string, string>> FindByValue(KeyValuePair<string,string> kvp, string value)
+{
+   foreach (KeyValuePair<string, string> kvp in AllJobs)
+   {
+   }
+
+}
+
+/*
+* Load and parse data from job_data.csv
+*/
         private static void LoadData()
         {
 
