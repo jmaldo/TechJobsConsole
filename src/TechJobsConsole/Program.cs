@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace TechJobsConsole
 {
     class Program
@@ -57,7 +56,7 @@ namespace TechJobsConsole
 
                     // What is their search term?
                     Console.WriteLine("\nSearch term: ");
-                    string searchTerm = Console.ReadLine();
+                    string searchTerm = Console.ReadLine().ToLower();
 
                     List<Dictionary<string, string>> searchResults;
 
@@ -120,19 +119,23 @@ namespace TechJobsConsole
 
         private static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-
-            foreach (Dictionary<string, string> job1 in someJobs)
+            int listing = someJobs.Count;
+            if (listing == 0)
             {
-                foreach (KeyValuePair<string, string> item in job1)
-                {
-                    Console.WriteLine(item.Key + ":" + item.Value);
-                }
-                Console.WriteLine("\n*****");
-
+                Console.WriteLine("No Results Found. Please Try Again.");
             }
-
-
-
+            else
+            {
+                foreach (Dictionary<string, string> AJob in someJobs)
+                {
+                    Console.WriteLine("\n---------------------");
+                    foreach (KeyValuePair<string, string> item in AJob)
+                    {
+                        Console.WriteLine(item.Key + ":" + item.Value);
+                    }
+                    Console.WriteLine("---------------------\n\n");
+                }
+            }
         }
     }
 }
